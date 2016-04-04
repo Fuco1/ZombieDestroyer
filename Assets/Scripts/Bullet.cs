@@ -13,10 +13,7 @@ public class Bullet : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider collider) {
-        if (!collider.gameObject.GetComponent<Bullet>() &&
-            !collider.gameObject.GetComponent<Pickup>()) {
-            KillSelf();
-        }
+        KillSelf();
     }
 
     protected virtual void KillSelf() {
