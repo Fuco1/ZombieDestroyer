@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour {
     public Pickup healthPickup;
     public Pickup megaHealthPickup;
 
-    private int wave = 1;
+    private int wave = 0;
     private int remaining = 0;
     private Text waveText;
 
