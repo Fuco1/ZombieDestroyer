@@ -15,6 +15,8 @@ public class Explosion : MonoBehaviour {
             if (transform.localScale.x > 5f) {
                 Destroy(gameObject);
             }
+            var light = GetComponentInChildren<Light>();
+            light.range += 2f;
         }
     }
 }
