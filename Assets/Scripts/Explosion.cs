@@ -11,7 +11,7 @@ public class Explosion : MonoBehaviour {
 
     public void Update() {
         if (isExploding) {
-            transform.localScale += Vector3.one * 6f * Time.deltaTime;
+            transform.localScale += Vector3.one * 12f * Time.deltaTime;
             if (transform.localScale.x > 5f) {
                 Destroy(gameObject);
             }
