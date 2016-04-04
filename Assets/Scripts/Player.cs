@@ -1,10 +1,10 @@
-using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
 
     public CharacterController controller;
     public Camera MainCamera;
+    public Light muzzle;
 
     public float speed = 5f;
     public float gravity = 9.8f;
@@ -15,6 +15,7 @@ public class Player : MonoBehaviour {
     public bool canJump = false;
 
     public bool canShoot = true;
+    public bool shooting = false;
 
     private Weapon weapon;
 
@@ -23,7 +24,14 @@ public class Player : MonoBehaviour {
     }
 
     void Start() {
-        EquipWith(new RocketLauncher());
+        EquipWith(new Minigun());
+        foreach (var l in GetComponentsInChildren<Light>()) {
+            if (l.name == "Muzzle") {
+                muzzle = l;
+                break;
+            }
+        }
+        muzzle.enabled = false;
     }
 
     public void EquipWith(Weapon weapon) {
@@ -54,14 +62,32 @@ public class Player : MonoBehaviour {
             canJump = false;
         }
 
+        shooting = false;
         if (Input.GetButton("Fire1")) {
             FireWeapon();
         }
     }
 
+    private void RenderMuzzleFlash() {
+        var p = new Vector3(Random.Range(-0.2f, 0.2f),
+                            Random.Range(-0.2f, 0.2f),
+                            muzzle.transform.localPosition.z);
+        muzzle.transform.localPosition = p;
+        muzzle.enabled = true;
+        Invoke("DisableMuzzleFlash", 0.2f);
+    }
+
+    private void DisableMuzzleFlash() {
+        if (!shooting) {
+            muzzle.enabled = false;
+        }
+    }
+
     private void FireWeapon() {
         if (!canShoot) return;
+        shooting = true;
         weapon.Shoot();
+        RenderMuzzleFlash();
         var reload = weapon.GetReloadTime();
         if (reload >= 0.001) {
             canShoot = false;
